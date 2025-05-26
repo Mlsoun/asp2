@@ -23,10 +23,12 @@ namespace MVC.Controllers
            
         }
 
-        //[Route("[action]/min/{priceMin:int}/max/{priceMax:int}")]
-        //public IActionResult searchByPrice(int priceMin, int priceMax)
-        //{
+        [Route("[action]/min/{priceMin:int}/max/{priceMax:int}")]
+        public IActionResult searchByPrice(int priceMin, int priceMax)
+        {
+            var data = SocksDataset.GetSocks().Where(x => x.Price >= priceMin && x.Price <= priceMax);
 
-        //}
+            return View("Index", data);
+        }
     }
 }
