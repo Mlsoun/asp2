@@ -1,0 +1,111 @@
+﻿@page "/person"
+@inject DataSet data
+
+<h3>Prvních 20 osob</h3>
+
+<InputText @bind-Value="SearchTerm"></InputText>
+<button class="btn btn-primary" @onclick="Search">
+    Hledej
+</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>
+                Jméno
+            </td>
+            <td>
+                Příjmení
+            </td>
+            <td>
+                Email
+            </td>
+            <td>
+                Dat. nar.
+            </td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var person in peopleToShow)
+        {
+            <tr>
+                <td>
+                    @person.FirstName
+                </td>
+                <td>
+                    @person.LastName
+                </td>
+                <td>
+                    @person.Email
+                </td>
+                <td>
+                    @person.DateOfBirth.ToString("dd. MM. yyyy")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@if(true)
+{
+    <button class="btn btn-primary" @onclick="Prev">Předchozí</button>
+}
+else
+{
+    <button disabled="@prevDisabled" class="btn btn-primary" @onclick="Prev">Předchozí</button>
+}
+
+<button class="btn btn-primary" @onclick="Next">Další</button>
+
+<button class="btn btn-primary" @onclick="Add10">+10</button>
+
+@code {
+    string SearchTerm = "";
+
+    List<BlazorApp.Model.Person> peopleToShow = new List<Model.Person>();
+    int take = 10, start = 0;
+
+    private bool prevDisabled = true;
+
+    protected override void OnInitialized()
+    {
+        peopleToShow = data.GetData().Take(take).ToList();
+
+    }
+    void Search()
+    {
+        peopleToShow = data.GetData().Where(x => x.Email.ToLower().Contains(SearchTerm.ToLower()))
+        .Take(10)
+        .ToList();
+
+    }
+    void Prev()
+    {
+
+        start -= take;
+        start = Math.Max(0, start);
+
+        if (start == 0)
+            prevDisabled = true;
+
+        peopleToShow = data.GetData().Skip(start).Take(take).ToList();
+    }
+    void Next()
+    {
+        prevDisabled = false;
+        start += take;
+        start = Math.Min(start, data.GetData().Count -take);
+
+        peopleToShow = data.GetData().Skip(start).Take(take).ToList();
+    }
+
+    void Add10()
+    {
+        var next10 = data.GetData().Skip(peopleToShow.Count).Take(10);
+        peopleToShow.AddRange(next10);
+
+    }
+
+}

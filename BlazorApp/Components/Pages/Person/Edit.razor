@@ -1,0 +1,26 @@
+﻿@page "/person/edit/{id:int}"
+@inject DataSet data
+
+<h3>Edit</h3>
+
+<BlazorApp.Components.Forms.PersonForm Person="person" OnSave="EditSave"/>
+
+
+@code {
+
+
+
+    [Parameter]
+    public int id { get; set; }
+
+    Model.Person person = new();
+    protected override void OnInitialized()
+    {
+        person = data.GetData().ElementAt(id);
+    }
+
+    void EditSave()
+    {
+        Console.WriteLine("ukládám osobu do db");
+    }
+}

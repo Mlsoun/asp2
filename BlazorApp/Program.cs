@@ -1,4 +1,5 @@
 using BlazorApp.Components;
+using BlazorApp.Data;
 using BlazorApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ builder.Services.AddRazorComponents()
 
 //pøidám scoped = každý user má vlastní
 builder.Services.AddScoped<SimpleCounter>();
+
+builder.Services.AddScoped<DataSet>();
 
 var app = builder.Build();
 
