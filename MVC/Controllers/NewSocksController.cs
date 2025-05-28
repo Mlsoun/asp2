@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVC.Data;
 using MVC.Models;
+using MVC.Services;
 
 namespace MVC.Controllers
 {
@@ -15,12 +16,15 @@ namespace MVC.Controllers
     public class NewSocksController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly SimpleFileLogger _logger;
 
-        public NewSocksController(ApplicationDbContext context)
+        public NewSocksController (ApplicationDbContext context, SimpleFileLogger logger)
         {
             _context = context;
+            _logger = logger;
         }
 
+    
         [AllowAnonymous]
         // GET: NewSocks
         public async Task<IActionResult> Index()
@@ -37,6 +41,9 @@ namespace MVC.Controllers
         // GET: NewSocks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            _logger.Log("volam metodu Detail na Home");
+
+
             if (id == null)
             {
                 return NotFound();

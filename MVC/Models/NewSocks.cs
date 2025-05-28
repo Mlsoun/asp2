@@ -16,6 +16,9 @@ namespace MVC.Models
 
         [Range(0,100)]
             public int InStock { get; set; }
-        }                
+        
+    }
+    
+
     
 }

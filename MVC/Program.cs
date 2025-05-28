@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVC.Data;
+using MVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options 
@@ -16,6 +18,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddControllers();
+
+builder.Services.AddSingleton<SimpleFileLogger>();
 
 var app = builder.Build();
 
@@ -33,6 +37,8 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseRequestLog();
 
 app.UseRouting();
 

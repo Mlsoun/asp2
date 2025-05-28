@@ -15,11 +15,15 @@ namespace MVC.Controllers
 
         public IActionResult Index()
         {
+            _logger.Log(LogLevel.Information ,"volam metodu Index na Home");
+            
             return View();
         }
 
         public IActionResult Privacy()
         {
+            _logger.Log(LogLevel.Information, "volam metodu Index na Privacy");
+
             return View();
         }
 
